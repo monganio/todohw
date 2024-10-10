@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TODOs</title>
+  <%= stylesheet_link_tag 'application', media: 'all' %> <!-- Rails stylesheet tag -->
+</head>
+<body>
+  <div class="todo-container">
+    <!-- Title Section -->
+    <h1 class="title">TODOS</h1>
+    
+    <!-- Tabs Section -->
+    <div class="tabs">
+      <button class="tab active">Incomplete</button>
+      <%= link_to "Complete", completed_tasks_path, class: "tab" %>
+    </div>
+    
+    <!-- Form for creating new tasks -->
+    <div class="input-container">
+      <%= form_with(model: @task, local: true) do |form| %>
+        <label for="todo-input">Name</label>
+        <%= form.text_field :name, placeholder: "Enter task name", class: "form-input", id: "todo-input" %>
+        <%= form.submit "Create Todo", class: "create-btn" %>
+      <% end %>
+    </div>
+    
+    <!-- List of tasks -->
+    <ul class="todo-list">
+      <% @tasks.each do |task| %>
+        <li class="todo-item">
+          <span><%= task.name %></span>
+          <div class="actions">
+            <%= link_to "✔", complete_task_path(task), method: :get, class: "complete-btn" %>
+            <%= link_to "🗑", task_path(task), method: :delete, data: { confirm: "Are you sure?" }, class: "delete-btn" %>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</body>
+</html>
